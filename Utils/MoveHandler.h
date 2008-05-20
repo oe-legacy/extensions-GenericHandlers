@@ -10,7 +10,6 @@
 #ifndef _MOVE_HANDLER_H_
 #define _MOVE_HANDLER_H_
 
-#include <Core/IGameEngine.h>
 #include <Core/IModule.h>
 #include <Display/Camera.h>
 #include <Devices/IKeyboard.h>
@@ -29,7 +28,7 @@ using namespace OpenEngine::Devices;
 /**
  * Camera movement handler
  */
-class MoveHandler : public IModule {
+    class MoveHandler : public IModule, public IListener<KeyboardEventArg> {
 
 private:
     Camera& cam;
@@ -50,10 +49,8 @@ public:
     void Deinitialize();
     bool IsTypeOf(const std::type_info& inf);
     void Process(const float dt, const float percent);
-    void HandleDownEvent(KeyboardEventArg arg);
-    void HandleUpEvent(KeyboardEventArg arg);
-    void HandleKeyEvent(KeyboardEventArg arg, bool state);
-    void RegisterWithEngine(IGameEngine& engine);
+    void Handle(KeyboardEventArg arg);
+    void BindToEventSystem();
 };
 
 } // NS Utils
