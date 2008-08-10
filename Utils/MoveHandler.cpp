@@ -49,7 +49,7 @@ void MoveHandler::Process(const float dt, const float percent) {
     }
     mouse->SetCursor(s.x,s.y);
 
-    float ms=.1*dt, rs=.007; // scaling factors
+    float ms=.5*dt, rs=.007; // scaling factors
 
     // compute move difference
     float x=0, z=0;
@@ -64,14 +64,14 @@ void MoveHandler::Process(const float dt, const float percent) {
 
     if (current < 0) {
         // move the camera [ Move(long, tran, vert) ]
-        if (x || z) cam.Move(ms*z,ms*x,0);
+        if (x || z) cam.Move(z,x,0);
         // relative pitch (positive goes up)
        if (dy) cam.Rotate(0, ms*dy*rs, 0);
         // rotate around up vector (positive goes left)
        if (dx) cam.Rotate(ms*dx*rs, Vector<3,float>(0,1,0));
     } else {
         if ((unsigned)current < nodes.size()) {
-            if (x || z)   nodes[current]->Move(x*ms,0,-z*ms);
+            if (x || z)   nodes[current]->Move(x,0,-z);
             if (dy || dx) nodes[current]->Rotate(-dy*rs*ms, dx*rs*ms, 0);
         }
     }
