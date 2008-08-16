@@ -16,6 +16,7 @@
 #include <Devices/IMouse.h>
 #include <Scene/TransformationNode.h>
 #include <vector>
+#include <Utils/Timer.h>
 
 namespace OpenEngine {
 namespace Utils {
@@ -24,15 +25,17 @@ using namespace OpenEngine::Core;
 using namespace OpenEngine::Display;
 using namespace OpenEngine::Scene;
 using namespace OpenEngine::Devices;
+using OpenEngine::Utils::Timer;
 
 /**
  * Camera movement handler
  */
-    class MoveHandler : public IModule, public IListener<KeyboardEventArg> {
+class MoveHandler : public IModule, public IListener<KeyboardEventArg> {
 
 private:
+    Timer timer;
     Camera& cam;
-    IMouse* mouse;
+    IMouse& mouse;
     bool forward, back, right, left; // active move direction
     int lx, ly;                      // last mouse position
     int current;                     // current node
@@ -43,14 +46,13 @@ public:
 
     std::vector<TransformationNode*> nodes; // node list
 
-    MoveHandler(Camera& cam);
+    MoveHandler(Camera& cam, IMouse& mouse);
     ~MoveHandler();
-    void Initialize();
-    void Deinitialize();
-    bool IsTypeOf(const std::type_info& inf);
-    void Process(const float dt, const float percent);
+
+    void Handle(InitializeEventArg arg);
+    void Handle(ProcessEventArg arg);
+    void Handle(DeinitializeEventArg arg);
     void Handle(KeyboardEventArg arg);
-    void BindToEventSystem();
 };
 
 } // NS Utils

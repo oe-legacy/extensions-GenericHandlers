@@ -9,36 +9,33 @@
 
 #include "MoveHandler.h"
 
-#include <Core/IGameEngine.h>
 #include <Devices/IMouse.h>
 #include <Math/Vector.h>
 
 namespace OpenEngine {
 namespace Utils {
 
-using OpenEngine::Core::IGameEngine;
 using OpenEngine::Math::Vector;
 using OpenEngine::Scene::TransformationNode;
 
-MoveHandler::MoveHandler(Camera& cam) 
-    : cam(cam),
+MoveHandler::MoveHandler(Camera& cam, IMouse& mouse) 
+    : cam(cam), mouse(mouse),
       forward(false), back(false),
       right(false), left(false),
       lx(middleXY), ly(middleXY), current(-1) {}
 
 MoveHandler::~MoveHandler() {}
 
-void MoveHandler::Initialize() {
-    mouse = dynamic_cast<IMouse*>(IGameEngine::Instance().Lookup(typeid(IMouse)));
-    mouse->HideCursor();
+void MoveHandler::Handle(InitializeEventArg arg) {
+    mouse.HideCursor();
+    timer.Start();
 }
 
-void MoveHandler::Deinitialize() {}
+void MoveHandler::Handle(DeinitializeEventArg arg) {}
 
-bool MoveHandler::IsTypeOf(const std::type_info& inf) { return false; }
-
-void MoveHandler::Process(const float dt, const float percent) {
-    MouseState s  = mouse->GetState();
+void MoveHandler::Handle(ProcessEventArg arg) {
+    MouseState s = mouse.GetState();
+    unsigned int dt = timer.GetElapsedTimeAndReset().AsInt();
 
     // reset the position, if out of the box
     if (minXY > s.x || s.x > maxXY) {
@@ -47,9 +44,9 @@ void MoveHandler::Process(const float dt, const float percent) {
     if (minXY > s.y || s.y > maxXY) {
         s.y = ly = middleXY;
     }
-    mouse->SetCursor(s.x,s.y);
+    mouse.SetCursor(s.x,s.y);
 
-    float ms=.5*dt, rs=.007; // scaling factors
+    float ms=.0001*dt, rs=.007; // scaling factors
 
     // compute move difference
     float x=0, z=0;
@@ -97,10 +94,6 @@ void MoveHandler::Handle(KeyboardEventArg arg) {
         break;
         // ignore all other keys
     }
-}
-
-void MoveHandler::BindToEventSystem() {
-    IKeyboard::keyEvent.Attach(*this);
 }
 
 } // NS Utils
