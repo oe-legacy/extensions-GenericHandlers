@@ -98,5 +98,25 @@ void MoveHandler::Handle(KeyboardEventArg arg) {
     }
 }
 
+void MoveHandler::Handle(JoystickAxisEventArg arg) {
+    
+    float max = 1 << 15;
+    float thres = 0.5;
+    
+
+    float up = (-arg.state.axisState[3])/max;
+    float down = (arg.state.axisState[3])/max;
+
+    float left_j = (-arg.state.axisState[2])/max;
+    float right_j = (arg.state.axisState[2])/max;
+
+    forward = (up > thres);
+    back = (down > thres);
+    left = (left_j > thres);
+    right = (right_j > thres);
+
+
+}
+
 } // NS Utils
 } // NS OpenEngine

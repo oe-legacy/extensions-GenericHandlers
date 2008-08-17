@@ -31,7 +31,8 @@ using OpenEngine::Utils::Timer;
 /**
  * Camera movement handler
  */
-    class MoveHandler : public IModule, public IListener<KeyboardEventArg> {
+    class MoveHandler : public IModule, public IListener<KeyboardEventArg>,
+			public IListener<JoystickAxisEventArg> {
 private:
     Timer timer;
     Camera& cam;
@@ -53,6 +54,7 @@ public:
     void Handle(ProcessEventArg arg);
     void Handle(DeinitializeEventArg arg);
     void Handle(KeyboardEventArg arg);
+    void Handle(JoystickAxisEventArg arg);
 };
 
 } // NS Utils
