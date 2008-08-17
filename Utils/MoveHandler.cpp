@@ -98,20 +98,5 @@ void MoveHandler::Handle(KeyboardEventArg arg) {
     }
 }
 
-void MoveHandler::Handle(JoystickButtonEventArg arg) {
-    
-    logger.info << "joy: " << arg.button << logger.end;
-
-}
-
-void MoveHandler::Handle(JoystickAxisEventArg arg) {
-
-    int up = arg.state.axisState[0];
-
-    logger.info << "axis :" << up << logger.end;
-
-}
-
-
 } // NS Utils
 } // NS OpenEngine
