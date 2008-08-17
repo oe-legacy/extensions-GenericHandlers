@@ -11,6 +11,7 @@
 
 #include <Devices/IMouse.h>
 #include <Math/Vector.h>
+#include <Logging/Logger.h>
 
 namespace OpenEngine {
 namespace Utils {
@@ -28,6 +29,7 @@ MoveHandler::~MoveHandler() {}
 
 void MoveHandler::Handle(InitializeEventArg arg) {
     mouse.HideCursor();
+    mouse.SetCursor(middleXY,middleXY);
     timer.Start();
 }
 
@@ -95,6 +97,21 @@ void MoveHandler::Handle(KeyboardEventArg arg) {
         // ignore all other keys
     }
 }
+
+void MoveHandler::Handle(JoystickButtonEventArg arg) {
+    
+    logger.info << "joy: " << arg.button << logger.end;
+
+}
+
+void MoveHandler::Handle(JoystickAxisEventArg arg) {
+
+    int up = arg.state.axisState[0];
+
+    logger.info << "axis :" << up << logger.end;
+
+}
+
 
 } // NS Utils
 } // NS OpenEngine

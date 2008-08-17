@@ -14,6 +14,7 @@
 #include <Display/Camera.h>
 #include <Devices/IKeyboard.h>
 #include <Devices/IMouse.h>
+#include <Devices/IJoystick.h>
 #include <Scene/TransformationNode.h>
 #include <vector>
 #include <Utils/Timer.h>
@@ -30,7 +31,9 @@ using OpenEngine::Utils::Timer;
 /**
  * Camera movement handler
  */
-class MoveHandler : public IModule, public IListener<KeyboardEventArg> {
+    class MoveHandler : public IModule, public IListener<KeyboardEventArg>,
+			public IListener<JoystickButtonEventArg>,
+			public IListener<JoystickAxisEventArg> {
 
 private:
     Timer timer;
@@ -53,6 +56,8 @@ public:
     void Handle(ProcessEventArg arg);
     void Handle(DeinitializeEventArg arg);
     void Handle(KeyboardEventArg arg);
+    void Handle(JoystickButtonEventArg arg);
+    void Handle(JoystickAxisEventArg arg);
 };
 
 } // NS Utils
