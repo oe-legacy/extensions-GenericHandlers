@@ -5,9 +5,6 @@
 #include <Devices/Symbols.h>
 #include <Devices/IKeyboard.h>
 
-using OpenEngine::Core::IEngine;
-using namespace OpenEngine::Devices;
-
 namespace OpenEngine {
 namespace Utils {
 
@@ -18,12 +15,12 @@ namespace Utils {
  * Every time the a key is released a key (UP) event is sent to the
  * handle method. If the key symbol is escape it quits the game.
  */
-class QuitHandler : public IListener<KeyboardEventArg> {
-    IEngine& engine;
+class QuitHandler : public Core::IListener<Devices::KeyboardEventArg> {
+    Core::IEngine& engine;
 public:
-    QuitHandler(IEngine& engine) : engine(engine) {}
-    void Handle(KeyboardEventArg arg) {
-        if (arg.sym == KEY_ESCAPE)
+    QuitHandler(Core::IEngine& engine) : engine(engine) {}
+    void Handle(Devices::KeyboardEventArg arg) {
+        if (arg.sym == Devices::KEY_ESCAPE)
             engine.Stop();
     }
 };
