@@ -82,7 +82,7 @@ void MoveHandler::Handle(ProcessEventArg arg) {
 
 // set state of keys on up/down events
 void MoveHandler::Handle(KeyboardEventArg arg) {
-    bool state = (arg.type == KeyboardEventArg::PRESS);
+    bool state = (arg.type == EVENT_PRESS);
     switch (arg.sym) {
         // movement keys
     case KEY_w: forward = state; break;
