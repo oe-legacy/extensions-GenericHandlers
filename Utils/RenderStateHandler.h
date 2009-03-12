@@ -1,38 +1,42 @@
 #ifndef _RENDER_STATE_HANDLER_H_
 #define _RENDER_STATE_HANDLER_H_
 
+#include <Core/IListener.h>
 #include <Devices/Symbols.h>
 #include <Devices/IKeyboard.h>
+#include <Scene/RenderStateNode.h>
 
+using namespace OpenEngine;
+using namespace OpenEngine::Display;
 using namespace OpenEngine::Devices;
 
-class RenderStateHandler {
+class RenderStateHandler : public Core::IListener<KeyboardEventArg> {
 private:
-    RenderStateNode* rNode;
+    Scene::RenderStateNode& rNode;
 public:
-    RenderStateHandler(RenderStateNode* rNode) : rNode(rNode) {}
+ RenderStateHandler(Scene::RenderStateNode& rNode) : rNode(rNode) {}
     void Handle(KeyboardEventArg arg) {
-        if (rNode == NULL) {
-            logger.info << "ERROR NO RenderStateNode found!" << logger.end;
-            return;
-        }
-        switch (arg.sym) {
-        case KEY_F1: rNode->ToggleOptions(RenderStateNode::RENDER_WIREFRAMED);   break;
-        case KEY_F2: rNode->ToggleOptions(RenderStateNode::RENDER_TEXTURES);     break;
-        case KEY_F3: rNode->ToggleOptions(RenderStateNode::RENDER_NORMALS);      break;
-        case KEY_F4: rNode->ToggleOptions(RenderStateNode::RENDER_SHADERS);      break;
-        case KEY_F5: rNode->ToggleOptions(RenderStateNode::RENDER_BACKFACES);    break;
-        case KEY_F6: rNode->ToggleOptions(RenderStateNode::RENDER_HARD_NORMAL);  break;
-        case KEY_F7: rNode->ToggleOptions(RenderStateNode::RENDER_BINORMALS);    break;
-        case KEY_F8: rNode->ToggleOptions(RenderStateNode::RENDER_TANGENTS);     break;
+        if (arg.type == EVENT_PRESS) {
+            switch (arg.sym) {
+            case KEY_F1:
+                rNode.ToggleOption(RenderStateNode::WIREFRAME); break;
+            case KEY_F2:
+                rNode.ToggleOption(RenderStateNode::TEXTURE); break;
+            case KEY_F3:
+                rNode.ToggleOption(RenderStateNode::SOFT_NORMAL); break;
+            case KEY_F4:
+                rNode.ToggleOption(RenderStateNode::SHADER); break;
+            case KEY_F5:
+                rNode.ToggleOption(RenderStateNode::BACKFACE); break;
+            case KEY_F6:
+                rNode.ToggleOption(RenderStateNode::HARD_NORMAL); break;
+            case KEY_F7: 
+                rNode.ToggleOption(RenderStateNode::BINORMAL); break;
+            case KEY_F8:
+                rNode.ToggleOption(RenderStateNode::TANGENT); break;
         default: break;
         }
-    }
-
-    void BindToEventSystem() {
-        Listener<RenderStateHandler, KeyboardEventArg>* rStateListener
-            = new Listener<RenderStateHandler, KeyboardEventArg> (*this, &RenderStateHandler::Handle);
-        IKeyboard::keyUpEvent.Add(rStateListener);
+        }
     }
 };
 
