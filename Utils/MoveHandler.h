@@ -31,8 +31,8 @@ using OpenEngine::Utils::Timer;
 /**
  * Camera movement handler
  */
-    class MoveHandler : public IModule, public IListener<KeyboardEventArg>,
-			public IListener<JoystickAxisEventArg> {
+class MoveHandler : public IModule, public IListener<KeyboardEventArg>,
+                    public IListener<JoystickAxisEventArg> {
 private:
     Timer timer;
     Camera& cam;
@@ -40,7 +40,8 @@ private:
     bool forward, back, right, left; // active move direction
     int lx, ly;                      // last mouse position
     int current;                     // current node
-
+    bool objMove;   // if enabled objects from 1-9 can be moved. 0 = cam.
+ 
     // define the box where the mouse should be inside
     static const int minXY = 100, maxXY = 400, middleXY=((maxXY-minXY)/2)+minXY;
 public:
@@ -49,6 +50,8 @@ public:
 
     MoveHandler(Camera& cam, IMouse& mouse);
     ~MoveHandler();
+    
+    void SetObjectMove(bool enabled);
 
     void Handle(InitializeEventArg arg);
     void Handle(ProcessEventArg arg);

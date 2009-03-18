@@ -23,9 +23,14 @@ MoveHandler::MoveHandler(Camera& cam, IMouse& mouse)
     : cam(cam), mouse(mouse),
       forward(false), back(false),
       right(false), left(false),
-      lx(middleXY), ly(middleXY), current(-1) {}
+      lx(middleXY), ly(middleXY), current(-1), objMove(true)  {}
 
 MoveHandler::~MoveHandler() {}
+
+void MoveHandler::SetObjectMove(bool enabled) {
+    objMove = enabled;
+}
+
 
 void MoveHandler::Handle(InitializeEventArg arg) {
     mouse.HideCursor();
@@ -48,7 +53,7 @@ void MoveHandler::Handle(ProcessEventArg arg) {
     }
     mouse.SetCursor(s.x,s.y);
 
-    float ms=.0001*dt, rs=.007; // scaling factors
+    float ms=.00002*dt, rs=.007; // scaling factors
 
     // compute move difference
     float x=0, z=0;
@@ -91,7 +96,7 @@ void MoveHandler::Handle(KeyboardEventArg arg) {
     case KEY_d: right   = state; break;
         // object changing
     default: 
-        if (arg.sym >= KEY_0 && arg.sym <= KEY_9)
+        if (objMove && arg.sym >= KEY_0 && arg.sym <= KEY_9)
             current = arg.sym - KEY_0 - 1;
         break;
         // ignore all other keys
