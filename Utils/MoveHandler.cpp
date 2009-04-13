@@ -40,18 +40,25 @@ void MoveHandler::Handle(InitializeEventArg arg) {
 
 void MoveHandler::Handle(DeinitializeEventArg arg) {}
 
-void MoveHandler::Handle(ProcessEventArg arg) {
+    void MoveHandler::Handle(MouseMovedEventArg arg) {}
+    void MoveHandler::Handle(ProcessEventArg arg) {
+        
     MouseState s = mouse.GetState();
     unsigned int dt = timer.GetElapsedTimeAndReset().AsInt();
+
+    bool reset = false;
 
     // reset the position, if out of the box
     if (minXY > s.x || s.x > maxXY) {
         s.x = lx = middleXY;
+        reset = true;
     }
     if (minXY > s.y || s.y > maxXY) {
         s.y = ly = middleXY;
+        reset = true;
     }
-    mouse.SetCursor(s.x,s.y);
+    if (reset)
+        mouse.SetCursor(middleXY, middleXY); //s.x,s.y);
 
     float ms=.00002*dt, rs=.007; // scaling factors
 
