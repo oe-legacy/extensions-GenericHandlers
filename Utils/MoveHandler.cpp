@@ -32,16 +32,16 @@ void MoveHandler::SetObjectMove(bool enabled) {
 }
 
 
-void MoveHandler::Handle(InitializeEventArg arg) {
+void MoveHandler::Handle(Core::InitializeEventArg arg) {
     mouse.HideCursor();
     mouse.SetCursor(middleXY,middleXY);
     timer.Start();
 }
 
-void MoveHandler::Handle(DeinitializeEventArg arg) {}
+    void MoveHandler::Handle(Core::DeinitializeEventArg arg) {}
 
     void MoveHandler::Handle(MouseMovedEventArg arg) {}
-    void MoveHandler::Handle(ProcessEventArg arg) {
+    void MoveHandler::Handle(Core::ProcessEventArg arg) {
         
     MouseState s = mouse.GetState();
     unsigned int dt = timer.GetElapsedTimeAndReset().AsInt();

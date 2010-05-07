@@ -56,10 +56,10 @@ public:
     
     void SetObjectMove(bool enabled);
 
-    void Handle(InitializeEventArg arg);
-    void Handle(ProcessEventArg arg);
+    void Handle(Core::InitializeEventArg arg);
+    void Handle(Core::ProcessEventArg arg);
+    void Handle(Core::DeinitializeEventArg arg);
     void Handle(MouseMovedEventArg arg);
-    void Handle(DeinitializeEventArg arg);
     void Handle(KeyboardEventArg arg);
     void Handle(JoystickAxisEventArg arg);
 };
