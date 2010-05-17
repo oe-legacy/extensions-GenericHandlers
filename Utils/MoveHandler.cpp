@@ -57,10 +57,13 @@ void MoveHandler::Handle(Core::InitializeEventArg arg) {
         s.y = ly = middleXY;
         reset = true;
     }
-    if (reset)
-        mouse.SetCursor(middleXY, middleXY); //s.x,s.y);
+    if (reset) {
+        mouse.SetCursor(lx, ly); //s.x,s.y);
+        return; // Skip this event
+    }
 
-    float ms=.00002*dt, rs=.007; // scaling factors
+    double ms=.0002*dt, // Key moving depends on the time
+        rs=0.01; // Rotation does not depend on time!
 
     // compute move difference
     float x=0, z=0;
@@ -77,9 +80,9 @@ void MoveHandler::Handle(Core::InitializeEventArg arg) {
         // move the camera [ Move(long, tran, vert) ]
         if (x || z) cam.Move(z,x,0);
         // relative pitch (positive goes up)
-       if (dy) cam.Rotate(0, ms*dy*rs, 0);
+       if (dy) cam.Rotate(0, dy*rs, 0);
         // rotate around up vector (positive goes left)
-       if (dx) cam.Rotate(ms*dx*rs, Vector<3,float>(0,1,0));
+       if (dx) cam.Rotate(dx*rs, Vector<3,float>(0,1,0));
     } else {
         if ((unsigned)current < nodes.size()) {
             if (x || z)   nodes[current]->Move(x,0,-z);

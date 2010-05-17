@@ -69,6 +69,7 @@ public:
     }
 
     void Handle(KeyboardEventArg arg) {
+        logger.info << "hey?" << logger.end;
         if (arg.type == EVENT_PRESS) {
             switch (arg.sym) {
             case KEY_F1:
