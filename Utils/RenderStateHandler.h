@@ -37,22 +37,14 @@ class RenderStateHandler : public Core::IListener<KeyboardEventArg>,
             rarg.opt = RenderStateNode::WIREFRAME;
             
             switch (arg.sym) {
-            case KEY_F1:
-                rarg.opt = RenderStateNode::WIREFRAME; break;
-            case KEY_F2:
-                rarg.opt = RenderStateNode::TEXTURE; break;
-            case KEY_F3:
-                rarg.opt = RenderStateNode::SOFT_NORMAL; break;
-            case KEY_F4:
-                rarg.opt = RenderStateNode::SHADER; break;
-            case KEY_F5:
-                rarg.opt = RenderStateNode::BACKFACE; break;
-            case KEY_F6:
-                rarg.opt = RenderStateNode::HARD_NORMAL; break;
-            case KEY_F7: 
-                rarg.opt = RenderStateNode::BINORMAL; break;
-            case KEY_F8:
-                rarg.opt = RenderStateNode::TANGENT; break;
+            case KEY_F1: rarg.opt = RenderStateNode::WIREFRAME; break;
+            case KEY_F2: rarg.opt = RenderStateNode::TEXTURE; break;
+            case KEY_F3: rarg.opt = RenderStateNode::SOFT_NORMAL; break;
+            case KEY_F4: rarg.opt = RenderStateNode::SHADER; break;
+            case KEY_F5: rarg.opt = RenderStateNode::BACKFACE; break;
+            case KEY_F6: rarg.opt = RenderStateNode::HARD_NORMAL; break;
+            case KEY_F7: rarg.opt = RenderStateNode::BINORMAL; break;
+            case KEY_F8: rarg.opt = RenderStateNode::TANGENT; break;
             default: break;
         }
         return rarg;

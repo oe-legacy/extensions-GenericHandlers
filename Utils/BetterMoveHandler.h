@@ -51,6 +51,7 @@ private:
     static const int minXY = 100, maxXY = 400, middleXY=((maxXY-minXY)/2)+minXY;
     bool mouseDownOnly;
     bool skip;
+    bool active;
 public:
 
     std::vector<TransformationNode*> nodes; // node list

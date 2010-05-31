@@ -23,7 +23,10 @@ BetterMoveHandler::BetterMoveHandler(Camera& cam, IMouse& mouse, bool mouseDownO
     : cam(cam), mouse(mouse),
       forward(false), back(false),
       right(false), left(false),
-      lx(middleXY), ly(middleXY), current(-1), objMove(true), mouseDownOnly(mouseDownOnly),skip(false)  {
+      lx(middleXY), ly(middleXY), 
+      current(-1), objMove(true),
+      mouseDownOnly(mouseDownOnly), skip(false),
+      active(false) {
     
 }
 
@@ -44,6 +47,7 @@ void BetterMoveHandler::Handle(Core::InitializeEventArg arg) {
 void BetterMoveHandler::Handle(Core::DeinitializeEventArg arg) {}
 
 void BetterMoveHandler::Handle(MouseMovedEventArg arg) {
+    if (!active) return;
     if (arg.buttons & BUTTON_LEFT) {
         if (skip) {
             skip = false;
@@ -90,9 +94,11 @@ void BetterMoveHandler::Handle(MouseButtonEventArg arg) {
         restorePos[0] = arg.state.x;
         restorePos[1] = arg.state.y;
         mouse.HideCursor();
-    } else if (arg.type == EVENT_RELEASE && arg.button == BUTTON_LEFT) {
+        active = true;
+    } else if (arg.type == EVENT_RELEASE && arg.button == BUTTON_LEFT && active) {
         mouse.SetCursor(restorePos[0], restorePos[1]);
         mouse.ShowCursor();
+        active = false;
     }
 }
 void BetterMoveHandler::Handle(Core::ProcessEventArg arg) {
