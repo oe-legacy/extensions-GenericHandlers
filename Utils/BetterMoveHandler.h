@@ -39,12 +39,13 @@ class BetterMoveHandler : public IModule,
                           public IListener<MouseButtonEventArg> {
 private:
     Timer timer;
-    Camera& cam;
+    //Camera& cam;
+    vector<Camera*> cams;
     IMouse& mouse;
     bool forward, back, right, left; // active move direction
     int lx, ly;                      // last mouse position
     Vector<2,int> restorePos;
-    int current;                     // current node
+    unsigned int current;                     // current node
     bool objMove;   // if enabled objects from 1-9 can be moved. 0 = cam.
  
     // define the box where the mouse should be inside
@@ -60,6 +61,8 @@ public:
     ~BetterMoveHandler();
     
     void SetObjectMove(bool enabled);
+
+    void PushCamera(Camera*);
 
     void Handle(Core::InitializeEventArg arg);
     void Handle(Core::ProcessEventArg arg);

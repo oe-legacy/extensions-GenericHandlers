@@ -20,17 +20,21 @@ using OpenEngine::Math::Vector;
 using OpenEngine::Scene::TransformationNode;
 
 BetterMoveHandler::BetterMoveHandler(Camera& cam, IMouse& mouse, bool mouseDownOnly) 
-    : cam(cam), mouse(mouse),
+    : mouse(mouse),
       forward(false), back(false),
       right(false), left(false),
       lx(middleXY), ly(middleXY), 
-      current(-1), objMove(true),
+      current(0), objMove(true),
       mouseDownOnly(mouseDownOnly), skip(false),
       active(false) {
-    
+    cams.push_back(&cam);
 }
 
 BetterMoveHandler::~BetterMoveHandler() {}
+
+void BetterMoveHandler::PushCamera(Camera* c) {
+    cams.push_back(c);
+}
 
 void BetterMoveHandler::SetObjectMove(bool enabled) {
     objMove = enabled;
@@ -47,6 +51,7 @@ void BetterMoveHandler::Handle(Core::InitializeEventArg arg) {
 void BetterMoveHandler::Handle(Core::DeinitializeEventArg arg) {}
 
 void BetterMoveHandler::Handle(MouseMovedEventArg arg) {
+    Camera& cam = *(cams[current]);
     if (!active) return;
     if (arg.buttons & BUTTON_LEFT) {
         if (skip) {
@@ -78,12 +83,12 @@ void BetterMoveHandler::Handle(MouseMovedEventArg arg) {
 
         double rs = 0.005;
 
-        if (current < 0) {
-            // relative pitch (positive goes up)
-            if (dy) cam.Rotate(0, dy*rs, 0);
-            // rotate around up vector (positive goes left)
-            if (dx) cam.Rotate(dx*rs, Vector<3,float>(0,1,0));
-        }
+        
+        // relative pitch (positive goes up)
+        if (dy) cam.Rotate(0, dy*rs, 0);
+        // rotate around up vector (positive goes left)
+        if (dx) cam.Rotate(dx*rs, Vector<3,float>(0,1,0));
+        
         skip = true;
         mouse.SetCursor(restorePos[0],restorePos[1]);
    
@@ -102,6 +107,8 @@ void BetterMoveHandler::Handle(MouseButtonEventArg arg) {
     }
 }
 void BetterMoveHandler::Handle(Core::ProcessEventArg arg) {
+    Camera& cam = *(cams[current]);
+
     unsigned int dt = timer.GetElapsedTimeAndReset().AsInt();
     double ms=.0002*dt; // Key moving depends on the time
 
@@ -112,15 +119,11 @@ void BetterMoveHandler::Handle(Core::ProcessEventArg arg) {
     if (left)     x -= ms;
     if (right)    x += ms;
 
-    if (current < 0) {
-        // move the camera [ Move(long, tran, vert) ]
-        if (x || z) cam.Move(z,x,0);
-        // relative pitch (positive goes up)
-    } else {
-        if ((unsigned)current < nodes.size()) {
-            if (x || z)   nodes[current]->Move(x,0,-z);
-        }
-    }
+    
+    // move the camera [ Move(long, tran, vert) ]
+    if (x || z) cam.Move(z,x,0);
+    // relative pitch (positive goes up)
+    
 }
 
 // set state of keys on up/down events
@@ -134,8 +137,11 @@ void BetterMoveHandler::Handle(KeyboardEventArg arg) {
     case KEY_d: right   = state; break;
         // object changing
     default: 
-        if (objMove && arg.sym >= KEY_0 && arg.sym <= KEY_9)
-            current = arg.sym - KEY_0 - 1;
+        if (arg.sym >= KEY_0 && arg.sym <= KEY_9) {
+            int c = arg.sym - KEY_0 - 1;
+            if (c < cams.size())
+                current = c;
+        }
         break;
         // ignore all other keys
     }
