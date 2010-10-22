@@ -138,7 +138,7 @@ void BetterMoveHandler::Handle(KeyboardEventArg arg) {
         // object changing
     default: 
         if (arg.sym >= KEY_0 && arg.sym <= KEY_9) {
-            int c = arg.sym - KEY_0 - 1;
+            unsigned int c = arg.sym - KEY_0 - 1;
             if (c < cams.size())
                 current = c;
         }
