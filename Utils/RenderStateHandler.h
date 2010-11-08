@@ -19,6 +19,7 @@ public:
 
 class RenderStateHandler : public Core::IListener<KeyboardEventArg>,
                            public Core::IListener<StateToggleActionArg> {
+public:
     class KeyboardMap : public KeyboardActionMapper<StateToggleActionArg> {
     public:
         KeyboardMap(RenderStateHandler& rh) {
