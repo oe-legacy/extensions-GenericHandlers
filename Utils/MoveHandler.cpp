@@ -20,15 +20,21 @@ using OpenEngine::Math::Vector;
 using OpenEngine::Scene::TransformationNode;
 
 MoveHandler::MoveHandler(Camera& cam, IMouse& mouse) 
-    : cam(cam), mouse(mouse),
-      forward(false), back(false),
-      right(false), left(false),
-      lx(middleXY), ly(middleXY), current(-1), objMove(true)  {}
+: cam(cam), mouse(mouse),
+    forward(false), back(false),
+    right(false), left(false),
+    lx(middleXY), ly(middleXY), current(-1), objMove(false),
+    moveScale(0.0002)
+{}
 
 MoveHandler::~MoveHandler() {}
 
 void MoveHandler::SetObjectMove(bool enabled) {
     objMove = enabled;
+}
+
+void MoveHandler::SetMoveScale(float m) {
+    moveScale = m;
 }
 
 
@@ -62,7 +68,7 @@ void MoveHandler::Handle(Core::InitializeEventArg arg) {
         return; // Skip this event
     }
 
-    double ms=.0002*dt, // Key moving depends on the time
+    double ms=moveScale*dt, // Key moving depends on the time
         rs=0.01; // Rotation does not depend on time!
 
     // compute move difference

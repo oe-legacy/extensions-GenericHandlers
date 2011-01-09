@@ -45,6 +45,8 @@ private:
     int current;                     // current node
     bool objMove;   // if enabled objects from 1-9 can be moved. 0 = cam.
  
+    float moveScale;
+
     // define the box where the mouse should be inside
     static const int minXY = 100, maxXY = 400, middleXY=((maxXY-minXY)/2)+minXY;
 public:
@@ -55,6 +57,7 @@ public:
     ~MoveHandler();
     
     void SetObjectMove(bool enabled);
+    void SetMoveScale(float m);
 
     void Handle(Core::InitializeEventArg arg);
     void Handle(Core::ProcessEventArg arg);
