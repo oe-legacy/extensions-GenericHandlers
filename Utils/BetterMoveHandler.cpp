@@ -18,15 +18,15 @@ namespace Utils {
 
 using OpenEngine::Math::Vector;
 using OpenEngine::Scene::TransformationNode;
-
+    
 BetterMoveHandler::BetterMoveHandler(Camera& cam, IMouse& mouse, bool mouseDownOnly) 
-    : mouse(mouse),
-      forward(false), back(false),
-      right(false), left(false),
-      lx(middleXY), ly(middleXY), 
-      current(0), objMove(true),
-      mouseDownOnly(mouseDownOnly), skip(false),
-      active(false) {
+: mouse(mouse),
+    forward(false), back(false),
+    right(false), left(false),
+    lx(middleXY), ly(middleXY), 
+    current(0), objMove(true),
+    mouseDownOnly(mouseDownOnly), skip(false),
+    active(false),moveScale(0.0002),slow(false) {
     cams.push_back(&cam);
 }
 
@@ -39,6 +39,11 @@ void BetterMoveHandler::PushCamera(Camera* c) {
 void BetterMoveHandler::SetObjectMove(bool enabled) {
     objMove = enabled;
 }
+
+void BetterMoveHandler::SetMoveScale(float m) {
+    moveScale = m;
+}
+
 
 
 void BetterMoveHandler::Handle(Core::InitializeEventArg arg) {
@@ -110,7 +115,7 @@ void BetterMoveHandler::Handle(Core::ProcessEventArg arg) {
     Camera& cam = *(cams[current]);
 
     unsigned int dt = timer.GetElapsedTimeAndReset().AsInt();
-    double ms=.0002*dt; // Key moving depends on the time
+    double ms=(slow?0.1:1.0)*moveScale*dt; // Key moving depends on the time
 
     // compute move difference
     float x=0, z=0;
@@ -135,6 +140,9 @@ void BetterMoveHandler::Handle(KeyboardEventArg arg) {
     case KEY_s: back    = state; break;
     case KEY_a: left    = state; break;
     case KEY_d: right   = state; break;
+    case KEY_LSHIFT:
+    case KEY_RSHIFT:
+        slow = state; break;
         // object changing
     default: 
         if (arg.sym >= KEY_0 && arg.sym <= KEY_9) {

@@ -51,8 +51,11 @@ private:
     // define the box where the mouse should be inside
     static const int minXY = 100, maxXY = 400, middleXY=((maxXY-minXY)/2)+minXY;
     bool mouseDownOnly;
-    bool skip;
+    bool skip;    
     bool active;
+    
+    float moveScale;
+    bool slow;
 public:
 
     std::vector<TransformationNode*> nodes; // node list
@@ -61,6 +64,7 @@ public:
     ~BetterMoveHandler();
     
     void SetObjectMove(bool enabled);
+    void SetMoveScale(float m);
 
     void PushCamera(Camera*);
 
