@@ -23,7 +23,7 @@ MoveHandler::MoveHandler(Camera& cam, IMouse& mouse)
 : cam(cam), mouse(mouse),
     forward(false), back(false),
     right(false), left(false),
-    lx(middleXY), ly(middleXY), current(-1), objMove(false),
+    lx(middleXY), ly(middleXY), current(-1), objMove(false), slow(false),
     moveScale(0.0002)
 {}
 
@@ -68,7 +68,7 @@ void MoveHandler::Handle(Core::InitializeEventArg arg) {
         return; // Skip this event
     }
 
-    double ms=moveScale*dt, // Key moving depends on the time
+    double ms=(slow?0.1:1.0)*moveScale*dt, // Key moving depends on the time        
         rs=0.01; // Rotation does not depend on time!
 
     // compute move difference
@@ -110,6 +110,9 @@ void MoveHandler::Handle(KeyboardEventArg arg) {
     case KEY_s: back    = state; break;
     case KEY_a: left    = state; break;
     case KEY_d: right   = state; break;
+    case KEY_LSHIFT:
+    case KEY_RSHIFT:
+        slow = state; break;
         // object changing
     default: 
         if (objMove && arg.sym >= KEY_0 && arg.sym <= KEY_9)

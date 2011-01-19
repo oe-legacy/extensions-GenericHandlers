@@ -44,7 +44,7 @@ private:
     int lx, ly;                      // last mouse position
     int current;                     // current node
     bool objMove;   // if enabled objects from 1-9 can be moved. 0 = cam.
- 
+    bool slow;
     float moveScale;
 
     // define the box where the mouse should be inside
