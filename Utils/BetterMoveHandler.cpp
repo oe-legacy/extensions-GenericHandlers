@@ -47,9 +47,10 @@ void BetterMoveHandler::SetMoveScale(float m) {
 
 
 void BetterMoveHandler::Handle(Core::InitializeEventArg arg) {
-    if (!mouseDownOnly)
+    if (!mouseDownOnly) {
         mouse.HideCursor();
-    mouse.SetCursor(middleXY,middleXY);
+        mouse.SetCursor(middleXY,middleXY);
+    }
     timer.Start();
 }
 

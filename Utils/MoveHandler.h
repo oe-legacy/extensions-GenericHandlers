@@ -31,7 +31,7 @@ using OpenEngine::Utils::Timer;
 /**
  * Camera movement handler
  */
-    class MoveHandler : public IModule,
+class MoveHandler : public IModule,
                     public IListener<KeyboardEventArg>,
                     public IListener<JoystickAxisEventArg>,
                     public IListener<MouseMovedEventArg>
