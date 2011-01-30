@@ -52,6 +52,8 @@ void MoveHandler::Handle(Core::InitializeEventArg arg) {
     MouseState s = mouse.GetState();
     unsigned int dt = timer.GetElapsedTimeAndReset().AsInt();
 
+    //logger.info << "dt: " << dt << logger.end;
+
     bool reset = false;
 
     // reset the position, if out of the box
@@ -110,6 +112,7 @@ void MoveHandler::Handle(KeyboardEventArg arg) {
     case KEY_s: back    = state; break;
     case KEY_a: left    = state; break;
     case KEY_d: right   = state; break;
+
     case KEY_LSHIFT:
     case KEY_RSHIFT:
         slow = state; break;
@@ -118,7 +121,7 @@ void MoveHandler::Handle(KeyboardEventArg arg) {
         if (objMove && arg.sym >= KEY_0 && arg.sym <= KEY_9)
             current = arg.sym - KEY_0 - 1;
         break;
-        // ignore all other keys
+    
     }
 }
 

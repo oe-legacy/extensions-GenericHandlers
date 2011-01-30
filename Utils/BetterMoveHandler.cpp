@@ -26,7 +26,8 @@ BetterMoveHandler::BetterMoveHandler(Camera& cam, IMouse& mouse, bool mouseDownO
     lx(middleXY), ly(middleXY), 
     current(0), objMove(true),
     mouseDownOnly(mouseDownOnly), skip(false),
-    active(false),moveScale(0.0002),slow(false) {
+    active(false),moveScale(0.0002),
+    inverted(false), slow(false) {
     cams.push_back(&cam);
 }
 
@@ -44,6 +45,9 @@ void BetterMoveHandler::SetMoveScale(float m) {
     moveScale = m;
 }
 
+void BetterMoveHandler::SetInverted(bool inv) {
+    inverted = inv;
+}
 
 
 void BetterMoveHandler::Handle(Core::InitializeEventArg arg) {
@@ -84,8 +88,8 @@ void BetterMoveHandler::Handle(MouseMovedEventArg arg) {
         // }
         
         // compute rotate difference
-        float dx = arg.dx;
-        float dy = arg.dy;
+        float dx = inverted ? -1 * arg.dx : arg.dx;
+        float dy = inverted ? -1 * arg.dy : arg.dx;
 
         double rs = 0.005;
 

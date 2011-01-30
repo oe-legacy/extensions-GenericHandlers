@@ -55,6 +55,7 @@ private:
     bool active;
     
     float moveScale;
+    bool inverted;
     bool slow;
 public:
 
@@ -65,6 +66,7 @@ public:
     
     void SetObjectMove(bool enabled);
     void SetMoveScale(float m);
+    void SetInverted(bool inv);
 
     void PushCamera(Camera*);
 
