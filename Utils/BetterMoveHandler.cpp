@@ -88,8 +88,11 @@ void BetterMoveHandler::Handle(MouseMovedEventArg arg) {
         // }
         
         // compute rotate difference
-        float dx = inverted ? -1 * arg.dx : arg.dx;
-        float dy = inverted ? -1 * arg.dy : arg.dx;
+        float dx = int(arg.x) - int(restorePos[0]); 
+        //float dx = inverted ? -1 * arg.dx : arg.dx;
+        float dy = int(arg.y) - int(restorePos[1]); 
+        // float dy = inverted ? -1 * arg.dy : arg.dy;
+        if (inverted) { dx = -dx; dy = -dy; }
 
         double rs = 0.005;
 
