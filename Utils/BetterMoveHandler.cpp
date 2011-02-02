@@ -25,7 +25,7 @@ BetterMoveHandler::BetterMoveHandler(Camera& cam, IMouse& mouse, bool mouseDownO
     right(false), left(false),
     lx(middleXY), ly(middleXY), 
     current(0), objMove(true),
-    mouseDownOnly(mouseDownOnly), skip(false),
+    mouseDownOnly(mouseDownOnly), //skip(false),
     active(false),moveScale(0.0002),
     inverted(false), slow(false) {
     cams.push_back(&cam);
@@ -64,10 +64,10 @@ void BetterMoveHandler::Handle(MouseMovedEventArg arg) {
     Camera& cam = *(cams[current]);
     if (!active) return;
     if (arg.buttons & BUTTON_LEFT) {
-        if (skip) {
-            skip = false;
-            return;
-        }
+        // if (skip) {
+        //     skip = false;
+        //     return;
+        // }
 
         MouseState s = mouse.GetState();
 
@@ -102,7 +102,7 @@ void BetterMoveHandler::Handle(MouseMovedEventArg arg) {
         // rotate around up vector (positive goes left)
         if (dx) cam.Rotate(dx*rs, Vector<3,float>(0,1,0));
         
-        skip = true;
+        // skip = true;
         mouse.SetCursor(restorePos[0],restorePos[1]);
    
     }
