@@ -1,0 +1,3 @@
+# source
+darcs /extensions/GenericHandlers    http://openengine.dk/code/extensions/GenericHandlers
+darcs-dev /extensions/GenericHandlers    fh.daimi.au.dk:/users/cgd/code/extensions/GenericHandlers
